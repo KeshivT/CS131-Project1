@@ -95,13 +95,14 @@ class Interpreter(InterpreterBase):
         else:
             super().error(ErrorType.NAME_ERROR, f"Function {func_name} undefined")
 
-    # Handles user input
+    # Handles user input (integer)
     def do_inputi(self, args):
         if args is None:
             args = []
         if len(args) > 1:
             super().error(ErrorType.NAME_ERROR, "No inputi() function found that takes > 1 parameter")
         else:
+            ## 1 argument, which is correct
             prompt = self.evaluate_expression(args[0])
             super().output(str(prompt))
     
@@ -112,10 +113,12 @@ class Interpreter(InterpreterBase):
     def do_print(self, args):
         if args is None:
             args = []
+        # Go through list of args and add to list
         all_args = []
         for arg in args:
             value = self.evaluate_expression(arg)
             all_args.append(str(value))
+        # Print all args together
         result = ''.join(all_args)
         super().output(result)
 
@@ -123,12 +126,16 @@ class Interpreter(InterpreterBase):
     # Expression Nodes
     def evaluate_expression(self, expression_node):
         # Pseudocode
+        # Value
         if expression_node.elem_type in [InterpreterBase.INT_NODE, InterpreterBase.STRING_NODE]:
             return self.get_value(expression_node)
+        # Variable
         elif expression_node.elem_type == InterpreterBase.QUALIFIED_NAME_NODE:
             return self.get_value_of_variable(expression_node)
+        # Operator
         elif expression_node.elem_type in ['+', '-', '*', '/']:
             return self.binary_operator(expression_node)
+        # Function call
         elif expression_node.elem_type == InterpreterBase.FCALL_NODE:
             return self.function_call(expression_node)
         else:
