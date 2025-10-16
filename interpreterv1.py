@@ -169,7 +169,7 @@ class Interpreter(InterpreterBase):
         
         # Can only be input for this
         if func_name == 'inputi':
-            return self.execute_inputi(args)
+            return self.do_inputi(args)
         else:
             super().error(ErrorType.NAME_ERROR, f"Function {func_name} undefined")
 
