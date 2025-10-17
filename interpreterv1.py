@@ -63,14 +63,14 @@ class Interpreter(InterpreterBase):
     def do_definition(self, statement_node):
         var_name = statement_node.get('name')
         if var_name in self.variable_name_to_value:
-            super().error(ErrorType.NAME_ERROR, f"Vairable {var_name} already defined")
+            super().error(ErrorType.NAME_ERROR, f"Variable {var_name} already defined")
         self.variable_name_to_value[var_name] = None
        
     # Assignemnt Statement
     def do_assignment(self, statement_node):
         # Credit to pseudocode!
-        target_var_name = statement_node.get('name')
-        if not target_var_name in self.variable_name_to_value:
+        target_var_name = statement_node.get('var')
+        if not (target_var_name in self.variable_name_to_value):
             super().error(ErrorType.NAME_ERROR, f"Variable {target_var_name} not defined")
         source_node = statement_node.get('expression')
         resulting_value = self.evaluate_expression(source_node)
